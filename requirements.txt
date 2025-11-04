@@ -1,0 +1,17 @@
+# Server Dependencies
+express@4.17.1
+cors@2.8.5
+dotenv@10.0.0
+openai@4.0.0
+langchain@0.0.75
+nodemon@2.0.15
+
+# Frontend Dependencies
+# Add any specific frontend packages if needed
+
+# Development Tools
+nodemon@2.0.15
+
+# Environment Variables Required
+OPENAI_API_KEY
+PORT=3001
