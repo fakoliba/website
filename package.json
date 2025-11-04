@@ -2,12 +2,13 @@
   "name": "truesec-website",
   "version": "1.0.0",
   "engines": {
-    "node": "16.x"
+    "node": "16.x",
+    "npm": "8.x"
   },
   "scripts": {
     "start": "node server/index.js",
     "build": "cd website && npm install",
-    "heroku-postbuild": "npm install && cd website && npm install",
+    "heroku-postbuild": "npm install",
     "dev": "nodemon server/index.js"
   },
   "dependencies": {
@@ -15,7 +16,8 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "openai": "^4.0.0",
-    "langchain": "^0.0.75"
+    "langchain": "^0.0.75",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
