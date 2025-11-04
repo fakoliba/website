@@ -25,4 +25,51 @@ document.addEventListener('DOMContentLoaded', () => {
             hamburger.classList.remove('active');
         }
     });
+
+    // Initialize RAG
+    const rag = new CustomRAG();
+    const chatMessages = document.getElementById('chat-messages');
+    const userInput = document.getElementById('user-input');
+    const sendButton = document.getElementById('send-button');
+
+    async function handleUserInput() {
+        const question = userInput.value.trim();
+        if (!question) return;
+
+        // Add user message
+        chatMessages.innerHTML += `
+            <div class="message user-message">
+                <p>${question}</p>
+            </div>
+        `;
+
+        userInput.value = '';
+        userInput.disabled = true;
+        sendButton.disabled = true;
+
+        try {
+            const response = await rag.query(question);
+            chatMessages.innerHTML += `
+                <div class="message bot-message">
+                    <p>${response.answer}</p>
+                </div>
+            `;
+        } catch (error) {
+            chatMessages.innerHTML += `
+                <div class="message error-message">
+                    <p>Sorry, there was an error processing your request.</p>
+                </div>
+            `;
+        }
+
+        userInput.disabled = false;
+        sendButton.disabled = false;
+        userInput.focus();
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    sendButton.addEventListener('click', handleUserInput);
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleUserInput();
+    });
 });
