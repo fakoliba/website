@@ -14,4 +14,3 @@ nodemon@2.0.15
 
 # Environment Variables Required
 OPENAI_API_KEY
-PORT=3001
