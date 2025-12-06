@@ -11,10 +11,10 @@
 <body>
       <nav class="navbar">
         <div class="logo">
-            <img src="assets/AI & Security Shield Logo.png" alt="TrueSec.ai Logo">
-            <div class="brand-name">
-                <span class="brand-text">TrueSec</span><span class="brand-ai">.ai</span>
-            </div>
+            <a href="index.html" class="brand-link">
+                <img src="assets/symbol.svg" alt="TrueSec.ai Logo" class="nav-logo">
+                <img src="assets/noBgColor word only.png" alt="TrueSec wordmark" class="brand-wordmark">
+            </a>
         </div>
         <ul class="nav-links">
             <li><a href="index.html#home">Home</a></li>
@@ -122,15 +122,37 @@
                 </div>
                 <div>
                     <h4 style="color:#fff;font-weight:700;margin-bottom:1rem;font-size:1.1rem;">Contact</h4>
-                    <p style="color:#d1d5db;font-size:0.9rem;">Email: info@truesec.</p>
+                    <p style="color:#d1d5db;font-size:0.9rem;">Email: TrueSecai@gmail.com</p>
                     <p style="color:#d1d5db;font-size:0.9rem;">Ready to transform your business</p>
                 </div>
             </div>
             <div style="border-top:1px solid #5f5559;padding-top:2rem;text-align:center;">
-                <p style="color:#9ca3af;font-size:0.9rem;">&copy; 2025 TrueSec.ai. All rights reserved. | Founded by Albert Cisse & Mohammed Cherif</p>
+                <p style="color:#9ca3af;font-size:0.9rem;">&copy; 2025 TrueSec.ai. All rights reserved. | Founded by Albert Cisse & Mohamed Cherif</p>
             </div>
         </div>
     </footer>
+
+    <!-- Floating Chat Widget -->
+    <button class="chat-widget-button" id="chat-widget-btn" aria-label="Open chat">
+        <i class="fas fa-comments"></i>
+    </button>
+
+    <div class="chat-modal" id="chat-modal">
+        <div class="chat-modal-header">
+            <h3>Chat with Us</h3>
+            <button class="chat-modal-close" id="chat-modal-close" aria-label="Close chat">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="chat-messages-container" id="chat-messages"></div>
+        <div class="chat-input-section">
+            <input type="text" id="chat-input" placeholder="Ask us anything...">
+            <button id="chat-send" aria-label="Send message">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
     <script src="js/main.js"></script>
 </body>
 </html>

@@ -11,10 +11,10 @@
 <body>
        <nav class="navbar">
         <div class="logo">
-            <img src="assets/AI & Security Shield Logo.png" alt="TrueSec.ai Logo">
-            <div class="brand-name">
-                <span class="brand-text">TrueSec</span><span class="brand-ai">.ai</span>
-            </div>
+            <a href="index.html" class="brand-link">
+                <img src="assets/symbol.svg" alt="TrueSec.ai Logo" class="nav-logo">
+                <img src="assets/noBgColor word only.png" alt="TrueSec wordmark" class="brand-wordmark">
+            </a>
         </div>
         <ul class="nav-links">
             <li><a href="index.html#home">Home</a></li>
@@ -46,7 +46,7 @@
                         <h3 style="font-size:1.1rem;font-weight:700;color:#0f1724;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem;">
                             <i class="fas fa-envelope" style="color:#6b5b5f;"></i> Email
                         </h3>
-                        <p style="color:#6b7280;font-size:1rem;"><a href="mailto:info@truesec.ai" style="color:#6b5b5f;text-decoration:none;">info@truesec.ai</a></p>
+                        <p style="color:#6b7280;font-size:1rem;"><a href="mailto:info@truesec.ai" style="color:#6b5b5f;text-decoration:none;">TruesecAi@gmail.com</a></p>
                     </div>
 
                     <div style="margin-bottom:2rem;">
@@ -71,24 +71,25 @@
 
                 <div style="background:#fff;padding:2.5rem;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,0.1);">
                     <h2 style="font-size:1.5rem;font-weight:800;color:#0f1724;margin-bottom:1.5rem;">Send us a Message</h2>
-                    <form style="display:flex;flex-direction:column;gap:1.2rem;">
+                    <form id="contact-form" style="display:flex;flex-direction:column;gap:1.2rem;">
                         <div>
                             <label style="display:block;font-weight:600;color:#0f1724;margin-bottom:0.5rem;font-size:0.9rem;">Full Name</label>
-                            <input type="text" placeholder="Your name" style="width:100%;padding:0.8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:1rem;box-sizing:border-box;transition:border-color 0.2s;" onfocus="this.style.borderColor='#6b5b5f'" onblur="this.style.borderColor='#e5e7eb'">
+                            <input type="text" name="name" placeholder="Your name" style="width:100%;padding:0.8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:1rem;box-sizing:border-box;transition:border-color 0.2s;" onfocus="this.style.borderColor='#6b5b5f'" onblur="this.style.borderColor='#e5e7eb'">
                         </div>
                         <div>
                             <label style="display:block;font-weight:600;color:#0f1724;margin-bottom:0.5rem;font-size:0.9rem;">Email Address</label>
-                            <input type="email" placeholder="your@email.com" style="width:100%;padding:0.8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:1rem;box-sizing:border-box;transition:border-color 0.2s;" onfocus="this.style.borderColor='#6b5b5f'" onblur="this.style.borderColor='#e5e7eb'">
+                            <input type="email" name="email" placeholder="your@email.com" style="width:100%;padding:0.8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:1rem;box-sizing:border-box;transition:border-color 0.2s;" onfocus="this.style.borderColor='#6b5b5f'" onblur="this.style.borderColor='#e5e7eb'">
                         </div>
                         <div>
                             <label style="display:block;font-weight:600;color:#0f1724;margin-bottom:0.5rem;font-size:0.9rem;">Subject</label>
-                            <input type="text" placeholder="What is this about?" style="width:100%;padding:0.8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:1rem;box-sizing:border-box;transition:border-color 0.2s;" onfocus="this.style.borderColor='#6b5b5f'" onblur="this.style.borderColor='#e5e7eb'">
+                            <input type="text" name="subject" placeholder="What is this about?" style="width:100%;padding:0.8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:1rem;box-sizing:border-box;transition:border-color 0.2s;" onfocus="this.style.borderColor='#6b5b5f'" onblur="this.style.borderColor='#e5e7eb'">
                         </div>
                         <div>
                             <label style="display:block;font-weight:600;color:#0f1724;margin-bottom:0.5rem;font-size:0.9rem;">Message</label>
-                            <textarea placeholder="Tell us more..." style="width:100%;padding:0.8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:1rem;box-sizing:border-box;min-height:120px;resize:vertical;transition:border-color 0.2s;font-family:inherit;" onfocus="this.style.borderColor='#6b5b5f'" onblur="this.style.borderColor='#e5e7eb'"></textarea>
+                            <textarea name="message" placeholder="Tell us more..." style="width:100%;padding:0.8rem;border:1px solid #e5e7eb;border-radius:8px;font-size:1rem;box-sizing:border-box;min-height:120px;resize:vertical;transition:border-color 0.2s;font-family:inherit;" onfocus="this.style.borderColor='#6b5b5f'" onblur="this.style.borderColor='#e5e7eb'"></textarea>
                         </div>
-                        <button type="submit" style="padding:0.9rem 2rem;background:#6b5b5f;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;transition:all 0.3s ease;" onmouseover="this.style.background='#5a4a4e'" onmouseout="this.style.background='#6b5b5f'">Send Message</button>
+                        <button type="submit" id="contact-submit" style="padding:0.9rem 2rem;background:#6b5b5f;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:1rem;transition:all 0.3s ease;" onmouseover="this.style.background='#5a4a4e'" onmouseout="this.style.background='#6b5b5f'">Send Message</button>
+                        <div id="contact-status" role="status" style="margin-top:0.5rem;font-size:0.95rem;color:#0f1724;display:none;"></div>
                     </form>
                 </div>
             </div>
@@ -154,7 +155,7 @@
                 </div>
                 <div>
                     <h4 style="color:#fff;font-weight:700;margin-bottom:1rem;font-size:1.1rem;">Contact</h4>
-                    <p style="color:#d1d5db;font-size:0.9rem;">Email: info@truesec.ai</p>
+                    <p style="color:#d1d5db;font-size:0.9rem;">Email: TruesecAi@gmail.com</p>
                     <p style="color:#d1d5db;font-size:0.9rem;">Ready to transform your business</p>
                 </div>
             </div>
@@ -163,6 +164,28 @@
             </div>
         </div>
     </footer>
+
+    <!-- Floating Chat Widget -->
+    <button class="chat-widget-button" id="chat-widget-btn" aria-label="Open chat">
+        <i class="fas fa-comments"></i>
+    </button>
+
+    <div class="chat-modal" id="chat-modal">
+        <div class="chat-modal-header">
+            <h3>Chat with Us</h3>
+            <button class="chat-modal-close" id="chat-modal-close" aria-label="Close chat">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="chat-messages-container" id="chat-messages"></div>
+        <div class="chat-input-section">
+            <input type="text" id="chat-input" placeholder="Ask us anything...">
+            <button id="chat-send" aria-label="Send message">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
     <script src="js/main.js"></script>
 </body>
 </html>

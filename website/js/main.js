@@ -26,50 +26,116 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Initialize RAG
-    const rag = new CustomRAG();
+    // Floating Chat Widget functionality
+    const chatWidgetBtn = document.getElementById('chat-widget-btn');
+    const chatModal = document.getElementById('chat-modal');
+    const chatModalClose = document.getElementById('chat-modal-close');
+    const chatInput = document.getElementById('chat-input');
+    const chatSend = document.getElementById('chat-send');
     const chatMessages = document.getElementById('chat-messages');
-    const userInput = document.getElementById('user-input');
-    const sendButton = document.getElementById('send-button');
 
-    async function handleUserInput() {
-        const question = userInput.value.trim();
-        if (!question) return;
-
-        // Add user message
-        chatMessages.innerHTML += `
-            <div class="message user-message">
-                <p>${question}</p>
-            </div>
-        `;
-
-        userInput.value = '';
-        userInput.disabled = true;
-        sendButton.disabled = true;
-
-        try {
-            const response = await rag.query(question);
-            chatMessages.innerHTML += `
-                <div class="message bot-message">
-                    <p>${response.answer}</p>
-                </div>
-            `;
-        } catch (error) {
-            chatMessages.innerHTML += `
-                <div class="message error-message">
-                    <p>Sorry, there was an error processing your request.</p>
-                </div>
-            `;
+    // Toggle chat modal
+    chatWidgetBtn.addEventListener('click', () => {
+        chatModal.classList.toggle('active');
+        if (chatModal.classList.contains('active')) {
+            chatInput.focus();
         }
+    });
 
-        userInput.disabled = false;
-        sendButton.disabled = false;
-        userInput.focus();
+    // Close chat modal
+    chatModalClose.addEventListener('click', () => {
+        chatModal.classList.remove('active');
+    });
+
+    // Close chat when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!chatModal.contains(e.target) && !chatWidgetBtn.contains(e.target)) {
+            chatModal.classList.remove('active');
+        }
+    });
+
+    // Send chat message
+    function sendChatMessage() {
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        // Add user message to chat
+        const userMsgDiv = document.createElement('div');
+        userMsgDiv.className = 'chat-message user';
+        userMsgDiv.textContent = message;
+        chatMessages.appendChild(userMsgDiv);
+
+        // Clear input
+        chatInput.value = '';
+
+        // Disable send button temporarily
+        chatSend.disabled = true;
+
+        // Simulate bot response after a short delay
+        setTimeout(() => {
+            const botMsgDiv = document.createElement('div');
+            botMsgDiv.className = 'chat-message bot';
+            botMsgDiv.textContent = 'Thanks for reaching out! One of our team members will be with you shortly. You can also email us at TruesecAi@mail.com.';
+            chatMessages.appendChild(botMsgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            chatSend.disabled = false;
+            chatInput.focus();
+        }, 500);
+
+        // Auto-scroll to latest message
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    sendButton.addEventListener('click', handleUserInput);
-    userInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleUserInput();
+    // Send message on button click
+    chatSend.addEventListener('click', sendChatMessage);
+
+    // Send message on Enter key
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendChatMessage();
+        }
     });
+
+    // Contact form submission (AJAX) -> POST to /api/contact
+    const contactForm = document.getElementById('contact-form');
+    if (contactForm) {
+        const contactStatus = document.getElementById('contact-status');
+        const contactSubmit = document.getElementById('contact-submit');
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!contactStatus || !contactSubmit) return;
+            contactSubmit.disabled = true;
+            contactStatus.style.display = 'block';
+            contactStatus.textContent = 'Sending...';
+
+            const formData = new FormData(contactForm);
+            const payload = {
+                name: formData.get('name') || '',
+                email: formData.get('email') || '',
+                subject: formData.get('subject') || '',
+                message: formData.get('message') || ''
+            };
+
+            try {
+                const resp = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (resp.ok) {
+                    contactStatus.textContent = 'Message sent — thank you! We will reply within 24 hours.';
+                    contactForm.reset();
+                } else {
+                    const data = await resp.json().catch(() => ({}));
+                    contactStatus.textContent = data.error || 'Failed to send message. Please try again later.';
+                }
+            } catch (err) {
+                console.error('Contact form error', err);
+                contactStatus.textContent = 'Network error. Please try again later.';
+            } finally {
+                contactSubmit.disabled = false;
+            }
+        });
+    }
 });
