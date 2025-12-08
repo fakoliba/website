@@ -204,3 +204,23 @@ Update CSS variables in `/website/styles/main.css`:
 **Version**: 1.0.0
 **Last Updated**: November 2025
 **Status**: Production Ready ✅
+
+## SMTP / Email setup (Gmail)
+
+To send real emails from the contact form using Gmail, you must set environment variables for SMTP credentials. For Gmail, create an "App password" (recommended) and set these in your environment before starting the server:
+
+```bash
+export EMAIL_HOST=smtp.gmail.com
+export EMAIL_PORT=587
+export EMAIL_SECURE=false
+export EMAIL_USER=your-gmail-address@gmail.com
+export EMAIL_PASS=your-app-password
+export CONTACT_TO=truesecai@gmail.com   # optional; default is truesecai@gmail.com
+export EMAIL_FROM="TrueSec.ai <no-reply@yourdomain.com>"  # optional
+npm start
+```
+
+Notes:
+- Use a Gmail App Password (https://support.google.com/accounts/answer/185833) instead of your main Google password for SMTP access.
+- For production, ensure the environment variables are injected securely by your hosting provider (Heroku config vars, AWS Secrets Manager, etc.).
+- The server will return an error if SMTP credentials are not provided (this prevents accidental fallback to test accounts in production).

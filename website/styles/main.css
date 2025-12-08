@@ -534,3 +534,19 @@ img { max-width: 100%; height: auto; display: block; }
 
 /* Make service cards linkable without default anchor styles */
 .service-link { text-decoration: none; color: inherit; display: block; }
+
+/* Contact column niceties */
+.contact-info { background: transparent; }
+.contact-form-card { background: #fff; }
+
+/* Add breathing room on mobile when stacked */
+@media (max-width: 768px) {
+    .contact-grid { gap: 1.5rem; }
+    .contact-form-card { padding: 1.5rem !important; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+    .contact-info { padding: 0 0.25rem; }
+}
+
+/* Larger touch targets for the form button on mobile */
+@media (max-width: 480px) {
+    .contact-form-card button#contact-submit { padding: 1rem 1.2rem; font-size: 1rem; }
+}

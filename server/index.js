@@ -55,33 +55,27 @@ app.post('/api/contact', async (req, res) => {
     // Determine recipient from environment (CONTACT_TO) with a safe default
     const recipient = process.env.CONTACT_TO || 'truesecai@gmail.com';
 
-    // If SMTP env vars are provided, use them (production). Otherwise fallback to Ethereal for dev/testing.
-    let transporter;
-    let usingEthereal = false;
-    if (process.env.EMAIL_HOST && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-      transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: process.env.EMAIL_PORT ? Number(process.env.EMAIL_PORT) : 587,
-        secure: process.env.EMAIL_SECURE === 'true',
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS,
-        },
-      });
-    } else {
-      // Create Ethereal test account for development (no real credentials required)
-      const testAccount = await nodemailer.createTestAccount();
-      usingEthereal = true;
-      transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        secure: false,
-        auth: {
-          user: testAccount.user,
-          pass: testAccount.pass,
-        },
-      });
+    // Require SMTP credentials for production (Gmail). Do not fallback to test accounts here.
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      // For security, we do not auto-create test accounts in this deployment.
+      console.error('SMTP credentials not provided. Set EMAIL_USER and EMAIL_PASS environment variables.');
+      return res.status(500).json({ error: 'SMTP not configured. Please set EMAIL_USER and EMAIL_PASS environment variables (use an app password for Gmail).' });
     }
+
+    // Use provided SMTP settings, defaulting to Gmail SMTP if EMAIL_HOST not provided
+    const smtpHost = process.env.EMAIL_HOST || 'smtp.gmail.com';
+    const smtpPort = process.env.EMAIL_PORT ? Number(process.env.EMAIL_PORT) : 587;
+    const smtpSecure = process.env.EMAIL_SECURE === 'true';
+
+    const transporter = nodemailer.createTransport({
+      host: smtpHost,
+      port: smtpPort,
+      secure: smtpSecure,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
     // For production SMTP, set the 'from' as configured EMAIL_FROM or the SMTP user; use replyTo for sender's address
     const fromAddress = process.env.EMAIL_FROM || process.env.EMAIL_USER || undefined;
@@ -100,12 +94,6 @@ app.post('/api/contact', async (req, res) => {
     };
 
     const info = await transporter.sendMail(mailOptions);
-
-    if (usingEthereal) {
-      const previewUrl = nodemailer.getTestMessageUrl(info);
-      console.log(`Test email sent successfully! Preview URL: ${previewUrl}`);
-      return res.json({ ok: true, message: 'Test email sent (ethereal). Check server logs for preview URL.', previewUrl });
-    }
 
     console.log('Email sent successfully (production SMTP)');
     return res.json({ ok: true, message: 'Email sent successfully.' });
