@@ -6,6 +6,19 @@ require('dotenv').config();
 
 const app = express();
 
+/* Debugging pointer:
+   To enable request-level debug logging for collaboration or deployment troubleshooting,
+   set the environment variable DEBUG=true before starting the server. Example:
+     DEBUG=true npm start
+   When enabled, basic request logs will be printed to the console.
+*/
+if (process.env.DEBUG === 'true' || process.env.DEBUG === '1') {
+  app.use((req, res, next) => {
+    console.log(`[DEBUG] ${new Date().toISOString()} ${req.method} ${req.originalUrl}`);
+    next();
+  });
+}
+
 app.use(cors());
 app.use(express.json());
 

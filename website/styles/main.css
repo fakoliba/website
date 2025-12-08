@@ -476,197 +476,51 @@ footer p {
     }
 }
 
-/* Floating Chat Widget */
-.chat-widget-button {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary-color), #ff1c1c);
-    border: none;
-    box-shadow: 0 8px 24px rgba(183,28,28,0.35);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    font-size: 1.8rem;
-    color: #fff;
-    z-index: 998;
+/* Mobile improvements and layout tweaks */
+@media (max-width: 900px) {
+    /* Reduce header padding for small screens */
+    header[ id="home"], header {
+        padding: 3.5rem 1.25rem !important;
+        min-height: 280px !important;
+    }
+
+    .hero-slideshow .slide h1 { font-size: 1.9rem !important; }
+    .hero-slideshow .slide p { font-size: 0.98rem !important; }
+
+    /* Ensure the CTA under the slideshow has more breathing room */
+    .hero-slideshow + a, .hero-slideshow + .cta {
+        margin-top: 1.6rem !important;
+        display: inline-block;
+    }
+
+    /* Make nav links easier to tap */
+    .nav-links li { margin: 1rem 0; }
+
+    /* Make service cards stack cleanly */
+    .services-grid { grid-template-columns: 1fr !important; padding: 2rem 3% !important; }
+
+    /* Adjust video section padding */
+    .video-section { padding: 2.5rem 1rem !important; }
 }
 
-.chat-widget-button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 12px 32px rgba(183,28,28,0.45);
+/* Small devices tweaks */
+@media (max-width: 480px) {
+    .hero-slideshow .slide h1 { font-size: 1.6rem !important; }
+    .hero-slideshow .slide p { font-size: 0.95rem !important; }
+    .nav-logo { height: 40px; }
 }
 
-.chat-widget-button:active {
-    transform: scale(0.95);
-}
-
-.chat-modal {
-    position: fixed;
-    bottom: 5.5rem;
-    right: 2rem;
-    width: 380px;
-    max-height: 600px;
-    background: var(--card-background);
-    border: 2px solid var(--border-color);
-    border-radius: 16px;
-    box-shadow: 0 16px 48px rgba(0,0,0,0.2);
-    display: none;
-    flex-direction: column;
-    z-index: 999;
-    opacity: 0;
-    transform: translateY(10px) scale(0.95);
-    transition: all 0.3s ease;
-}
-
-.chat-modal.active {
-    display: flex;
-    opacity: 1;
-    transform: translateY(0) scale(1);
-}
-
-.chat-modal-header {
-    background: linear-gradient(135deg, #6b5b5f 0%, #7a9fb5 100%);
-    color: #fff;
-    padding: 1.2rem;
-    border-radius: 14px 14px 0 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.chat-modal-header h3 {
-    margin: 0;
-    font-size: 1.1rem;
-    font-weight: 700;
-}
-
-.chat-modal-close {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 0;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s ease;
-}
-
-.chat-modal-close:hover {
-    transform: rotate(90deg);
-}
-
-.chat-messages-container {
-    flex: 1;
-    overflow-y: auto;
-    padding: 1.2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.8rem;
-    background: var(--card-background);
-    min-height: 300px;
-}
-
-.chat-message {
-    padding: 0.8rem 1rem;
-    border-radius: 8px;
-    word-wrap: break-word;
-    font-size: 0.95rem;
-    line-height: 1.4;
-    max-width: 85%;
-}
-
-.chat-message.bot {
-    background: rgba(107,91,95,0.1);
-    color: var(--text-color);
-    border-left: 3px solid var(--primary-color);
-    align-self: flex-start;
-}
-
-.chat-message.user {
-    background: linear-gradient(135deg, var(--primary-color), #ff1c1c);
-    color: #fff;
-    align-self: flex-end;
-}
-
-.chat-input-section {
-    padding: 1.2rem;
-    border-top: 2px solid var(--border-color);
-    display: flex;
-    gap: 0.6rem;
-    background: var(--card-background);
-    border-radius: 0 0 14px 14px;
-}
-
-.chat-input-section input {
-    flex: 1;
-    padding: 0.7rem 0.9rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background: rgba(255,255,255,0.05);
-    color: var(--text-color);
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
-}
-
-.chat-input-section input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    background: rgba(255,255,255,0.1);
-    box-shadow: 0 0 8px rgba(183,28,28,0.2);
-}
-
-.chat-input-section button {
-    padding: 0.7rem 1rem;
-    background: linear-gradient(135deg, var(--primary-color), #ff1c1c);
-    border: none;
-    border-radius: 8px;
-    color: #fff;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.chat-input-section button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(183,28,28,0.3);
-}
-
-.chat-input-section button:active {
-    transform: translateY(0);
-}
-
+/* Accessibility: increase tappable area for buttons on mobile */
 @media (max-width: 768px) {
-    .chat-widget-button {
-        width: 56px;
-        height: 56px;
-        bottom: 1.5rem;
-        right: 1.5rem;
-        font-size: 1.5rem;
-    }
-
-    .chat-modal {
-        width: calc(100% - 3rem);
-        max-width: 380px;
-        bottom: 5rem;
-        right: 1.5rem;
-        left: auto;
-        max-height: 500px;
-    }
-
-    .chat-messages-container {
-        min-height: 250px;
-    }
+    .hamburger { width: 56px; height: 56px; }
+    .nav-links a { padding: 12px 8px; display:block; }
 }
+
+/* Add consistent spacing between hero slideshow and CTA */
+.hero-slideshow + a, .hero-slideshow + .cta { margin-top: 2rem; }
+
+/* Make images responsive by default */
+img { max-width: 100%; height: auto; display: block; }
+
+/* Constrain common containers for small screens */
+.container { padding: 0 1rem; box-sizing: border-box; }
