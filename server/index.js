@@ -38,41 +38,77 @@ app.post('/api/contact', async (req, res) => {
   }
 
   try {
-    // Create a test account with Ethereal Email (no credentials needed for testing)
-    let testAccount = await nodemailer.createTestAccount();
+    // Basic validation for email format (simple regex)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Invalid email address' });
+    }
 
-    // Create transporter using Ethereal test account
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.ethereal.email',
-      port: 587,
-      secure: false,
-      auth: {
-        user: testAccount.user,
-        pass: testAccount.pass,
-      },
-    });
+    // Small helper to escape HTML for the message body
+    const escapeHtml = (str = '') => String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+
+    // Determine recipient from environment (CONTACT_TO) with a safe default
+    const recipient = process.env.CONTACT_TO || 'truesecai@gmail.com';
+
+    // If SMTP env vars are provided, use them (production). Otherwise fallback to Ethereal for dev/testing.
+    let transporter;
+    let usingEthereal = false;
+    if (process.env.EMAIL_HOST && process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+      transporter = nodemailer.createTransport({
+        host: process.env.EMAIL_HOST,
+        port: process.env.EMAIL_PORT ? Number(process.env.EMAIL_PORT) : 587,
+        secure: process.env.EMAIL_SECURE === 'true',
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      });
+    } else {
+      // Create Ethereal test account for development (no real credentials required)
+      const testAccount = await nodemailer.createTestAccount();
+      usingEthereal = true;
+      transporter = nodemailer.createTransport({
+        host: 'smtp.ethereal.email',
+        port: 587,
+        secure: false,
+        auth: {
+          user: testAccount.user,
+          pass: testAccount.pass,
+        },
+      });
+    }
+
+    // For production SMTP, set the 'from' as configured EMAIL_FROM or the SMTP user; use replyTo for sender's address
+    const fromAddress = process.env.EMAIL_FROM || process.env.EMAIL_USER || undefined;
+
+    const safeName = escapeHtml(name);
+    const safeSubject = escapeHtml(subject || `Website contact from ${name}`);
+    const safeMessage = escapeHtml(message).replace(/\n/g, '<br>');
 
     const mailOptions = {
-      from: `${name} <${testAccount.user}>`,
-      to: 'TrueSecai@gmail.com', // Test recipient
-      subject: subject || `Website contact from ${name}`,
+      from: fromAddress ? `${fromAddress}` : `${safeName} <no-reply@${req.hostname || 'truesec.ai'}>`,
+      to: recipient,
+      replyTo: email,
+      subject: safeSubject,
       text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
-      html: `<p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p><p><strong>Message:</strong></p><p>${message.replace(/\n/g, '<br>')}</p>`,
+      html: `<p><strong>Name:</strong> ${safeName}</p><p><strong>Email:</strong> <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p><p><strong>Message:</strong></p><p>${safeMessage}</p>`,
     };
 
     const info = await transporter.sendMail(mailOptions);
 
-    // Generate preview URL for the test email
-    const previewUrl = nodemailer.getTestMessageUrl(info);
+    if (usingEthereal) {
+      const previewUrl = nodemailer.getTestMessageUrl(info);
+      console.log(`Test email sent successfully! Preview URL: ${previewUrl}`);
+      return res.json({ ok: true, message: 'Test email sent (ethereal). Check server logs for preview URL.', previewUrl });
+    }
 
-    console.log(`Test email sent successfully!`);
-    console.log(`Preview URL: ${previewUrl}`);
-
-    return res.json({ 
-      ok: true, 
-      message: 'Test email sent! Check the preview URL in the server logs.',
-      previewUrl: previewUrl
-    });
+    console.log('Email sent successfully (production SMTP)');
+    return res.json({ ok: true, message: 'Email sent successfully.' });
   } catch (err) {
     console.error('Error sending contact email:', err);
     return res.status(500).json({ error: 'Failed to send email: ' + err.message });

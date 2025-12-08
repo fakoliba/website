@@ -183,7 +183,7 @@ Update CSS variables in `/website/styles/main.css`:
 
 ## Contact & Support
 
-**Email**: info@truesec.ai
+**Email**: truesecai@gmail.com
 **Founders**: 
 - Albert Cisse - Founder & CEO
 - Mohammed Cherif - Co-Founder & CTO

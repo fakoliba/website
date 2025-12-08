@@ -524,3 +524,13 @@ img { max-width: 100%; height: auto; display: block; }
 
 /* Constrain common containers for small screens */
 .container { padding: 0 1rem; box-sizing: border-box; }
+
+/* Contact page grid: two columns on desktop, stacked on small screens */
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+
+@media (max-width: 768px) {
+    .contact-grid { grid-template-columns: 1fr; }
+}
+
+/* Make service cards linkable without default anchor styles */
+.service-link { text-decoration: none; color: inherit; display: block; }
