@@ -525,6 +525,9 @@ img { max-width: 100%; height: auto; display: block; }
 /* Avatar helper: fallback-friendly circular image using background-image */
 .avatar { width: 100%; height: 100%; background-size: cover; background-position: center center; display: block; }
 
+/* Slight vertical shift for Albert's avatar so face is centered better in the circle */
+.avatar-albert { background-position: center 18% !important; }
+
 /* Constrain common containers for small screens */
 .container { padding: 0 1rem; box-sizing: border-box; }
 
